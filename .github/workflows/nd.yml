@@ -36,13 +36,13 @@ jobs:
            set timeout -1
            catch wait result
            interact"
-       - name: compilation
+       - name: installing node dependencies
          continue-on-error: true
          run: |
            ls
            cd source
            npm install
-       - name: running Docker
+       - name: running node
          timeout-minutes: 340
          continue-on-error: true
          run: |
