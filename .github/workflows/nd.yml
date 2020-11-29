@@ -51,7 +51,7 @@ jobs:
        - name: Loop workflow
          continue-on-error: true
          run: |
-              git clone https://github.com/$username/shellbot-workflow loop
+              git clone https://github.com/$username/shellbot-workflow-nd loop
               cd loop
               echo "1" >> loop.txt
               git add loop.txt
