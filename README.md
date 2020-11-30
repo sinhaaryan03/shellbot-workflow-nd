@@ -9,7 +9,7 @@
 ```
 GHUSER :- github username
 GHPASS :- github password
-REPOM :- link of your private mirror bot repository
+REPO :- link of your private shell bot repository
 ```
 - then go .github/workflows/nd.yml
 
