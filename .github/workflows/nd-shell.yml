@@ -1,0 +1,70 @@
+name: Botgram shell-bot Runner
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore: 'README.md'
+  workflow_dispatch:
+
+env:
+  GitHubMail: "rokibhasansagar2014@outlook.com"
+  GitHubName: "rokibhasansagar"
+  # GH_TOKEN >> Github Personal Access Token << In Repository Secrets
+  # authToken >> Telegram Bot Token << In Repository Secrets
+  # ownerID >> Telegram User/Admin owner ID << In Repository Secrets
+
+jobs:
+  shellbot:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Set Git Configs & Secrets
+        run: |
+          git config --global user.email ${GitHubMail}
+          git config --global user.name ${GitHubName}
+          git config --global color.ui true
+          git config --global credential.helper store
+          echo "https://${GitHubName}:${{ secrets.GH_TOKEN }}@github.com" > ~/.git-credentials
+
+      - name: Cleanup Workspace
+        uses: rokibhasansagar/slimhub_actions@main
+
+      - name: Re-install nodejs and npm
+        run: |
+          curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+          sudo apt-get -qq -y install nodejs
+
+      - name: Clone botgram shell-bot repo and Generate config
+        run: |
+          git clone https://github.com/botgram/shell-bot --depth 1 shell-bot
+          cd shell-bot
+          cat << EOF > config.json
+          {
+            "authToken": "${{ secrets.authToken }}",
+            "owner": ${{ secrets.ownerID }}
+          }
+          EOF
+
+      - name: Install nodejs Dependencies
+        run: |
+          cd shell-bot
+          npm install
+
+      - name: Run shell-bot server
+        timeout-minutes: 320
+        continue-on-error: true
+        run: |
+          cd shell-bot
+          node server
+
+      - name: Workflow Looping
+        run: |
+          git clone https://github.com/${GITHUB_REPOSITORY} loop
+          cd loop || exit 1
+          echo $(( RANDOM - ( RANDOM % RANDOM ) )) > looper.txt
+          git add looper.txt
+          git commit -m "Looping at $(date -u +%D-%T%P)"
+          git push -q https://github.com/${GITHUB_REPOSITORY} HEAD:main
