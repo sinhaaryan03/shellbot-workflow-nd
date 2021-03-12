@@ -34,13 +34,12 @@ jobs:
 
       - name: Re-install nodejs and npm
         run: |
-          curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-          sudo apt-get -qq -y install nodejs
+          sudo apt-get -y install pv tree mediainfo p7zip-full
 
-      - name: Clone botgram shell-bot repo and Generate config
+      - name: Clone userbot repo and Generate config
         run: |
-          git clone https://github.com/botgram/shell-bot --depth 1 shell-bot
-          cd shell-bot
+          git clone https://github.com/sasukeuchiha-clan/HyperUserBot-X HyperUserBot-X
+          cd HyperUserBot-X
           cat << EOF > config.json
           {
             "authToken": "${{ secrets.authToken }}",
