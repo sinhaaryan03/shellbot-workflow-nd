@@ -34,7 +34,7 @@ jobs:
 
       - name: Re-install nodejs and npm
         run: |
-          sudo apt-get -y install pv tree mediainfo p7zip-full
+          sudo apt-get -y install pv tree mediainfo p7zip-full python3 ffmpeg
 
       - name: Clone userbot repo and Generate config
         run: |
