@@ -49,15 +49,15 @@ jobs:
 
       - name: Install nodejs Dependencies
         run: |
-          cd shell-bot
-          npm install
+          cd HyperUserBot-X
+          pip3 install -r requirements.txt
 
-      - name: Run shell-bot server
+      - name: Run userbot server
         timeout-minutes: 320
         continue-on-error: true
         run: |
-          cd shell-bot
-          node server
+          cd HyperUserBot-X
+          python3 -m userbot
 
       - name: Workflow Looping
         run: |
